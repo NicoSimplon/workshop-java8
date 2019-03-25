@@ -22,10 +22,8 @@ public class Method_03_Test {
 		// TODO cette méthode retourne une instance de la classe DaoA
 
 		static IDao getDefaultInstance() {
-
-			IDao instance = new DaoA();
 			
-			return instance;
+			return new DaoA();
 
 		}
 	}
