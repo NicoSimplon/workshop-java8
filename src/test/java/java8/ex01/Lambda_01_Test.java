@@ -23,6 +23,7 @@ public class Lambda_01_Test {
     // tag::filter[]
     private List<Person> filter(List<Person> persons, PersonPredicate predicate) {
         // TODO implementer la méthode
+    	
         return null;
     }
     // end::filter[]
