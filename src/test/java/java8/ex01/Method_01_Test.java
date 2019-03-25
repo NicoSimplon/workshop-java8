@@ -14,55 +14,66 @@ import static org.junit.Assert.*;
  */
 public class Method_01_Test {
 
-    // tag::IDao[]
-    interface IDao {
-        List<Person> findAll();
+	// tag::IDao[]
+	interface IDao {
+		List<Person> findAll();
 
-        // TODO créer une méthode int sumAge()
-        // TODO Cette méthode retourne le résultat de l'addition des ages des personnes
-    }
-    // end::IDao[]
+		// TODO créer une méthode int sumAge()
+		// TODO Cette méthode retourne le résultat de l'addition des ages des
+		// personnes
+		default int sumAge(List<Person> listPerson) {
 
-    class DaoA implements IDao {
+			int total = 0;
+			
+			for (Person p : listPerson) {
+				total += p.getAge();
+			}
 
-        List<Person> people = Data.buildPersonList(20);
+			return total;
+		}
+	}
+	// end::IDao[]
 
-        @Override
-        public List<Person> findAll() {
-            return people;
-        }
-    }
+	class DaoA implements IDao {
 
-    class DaoB implements IDao {
+		List<Person> people = Data.buildPersonList(20);
 
-        List<Person> people = Data.buildPersonList(100);
+		@Override
+		public List<Person> findAll() {
+			return people;
+		}
+	}
 
-        @Override
-        public List<Person> findAll() {
-            return people;
-        }
-    }
+	class DaoB implements IDao {
 
-    @Test
-    public void test_daoA_sumAge() throws Exception {
+		List<Person> people = Data.buildPersonList(100);
 
-        DaoA daoA = new DaoA();
+		@Override
+		public List<Person> findAll() {
+			return people;
+		}
+	}
 
-        // TODO invoquer la méthode sumAge pour que le test soit passant
-        int result = 0;
+	@Test
+	public void test_daoA_sumAge() throws Exception {
 
-        assertThat(result, is(210));
-    }
+		DaoA daoA = new DaoA();
 
-    @Test
-    public void test_daoB_sumAge() throws Exception {
+		// TODO invoquer la méthode sumAge pour que le test soit passant
+		int result = 0;
 
-        DaoB daoB = new DaoB();
+		assertThat(result, is(210));
+	}
 
-        // TODO invoquer la méthode sumAge pour que le test soit passant
-        int result = 0;
+	@Test
+	public void test_daoB_sumAge() throws Exception {
 
-        assertThat(result, is(5050));
+		DaoB daoB = new DaoB();
 
-    }
+		// TODO invoquer la méthode sumAge pour que le test soit passant
+		int result = 0;
+
+		assertThat(result, is(5050));
+
+	}
 }
