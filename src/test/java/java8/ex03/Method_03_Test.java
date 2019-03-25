@@ -14,31 +14,41 @@ import static org.junit.Assert.*;
  */
 public class Method_03_Test {
 
-    // tag::IDao[]
-    interface IDao {
-        List<Person> findAll();
+	// tag::IDao[]
+	interface IDao {
+		List<Person> findAll();
 
-        // TODO créer une méthode statique IDao getDefaultInstance()
-        // TODO cette méthode retourne une instance de la classe DaoA
-    }
-    // end::IDao[]
+		// TODO créer une méthode statique IDao getDefaultInstance()
+		// TODO cette méthode retourne une instance de la classe DaoA
 
-    class DaoA implements IDao {
+		static IDao getDefaultInstance() {
 
-        List<Person> people = Data.buildPersonList(20);
+			IDao instance = new DaoA();
+			
+			return instance;
 
-        @Override
-        public List<Person> findAll() {
-            return people;
-        }
+		}
+	}
+	// end::IDao[]
 
-    }
+	static class DaoA implements IDao {
 
-    @Test
-    public void test_getDefaultInstance() throws Exception {
-        // TODO invoquer la méthode getDefaultInstance() pour que le test soit passant
-        IDao result = null;
+		List<Person> people = Data.buildPersonList(20);
 
-        assertThat(result.findAll(), hasSize(20));
-    }
+		@Override
+		public List<Person> findAll() {
+			return people;
+		}
+
+	}
+
+	@Test
+	public void test_getDefaultInstance() throws Exception {
+		// TODO invoquer la méthode getDefaultInstance() pour que le test soit
+		// passant
+
+		IDao result = IDao.getDefaultInstance();
+
+		assertThat(result.findAll(), hasSize(20));
+	}
 }

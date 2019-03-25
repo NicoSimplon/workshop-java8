@@ -49,9 +49,9 @@ public class Method_02_Test {
         @Override
         public String format(List<Person> list){
         	
-        	int nb_personnes = list.size();
+        	String retour = "DaoA";
         	
-        	return "DaoA[" + nb_personnes + " persons]";
+        	return retour += IDao.super.format(list);
         }
 
     }
