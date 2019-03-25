@@ -44,21 +44,16 @@ public class Lambda_02_Test {
 
 		// TODO transformer la liste de personnes en liste de comptes
 		// TODO tous les objets comptes ont un solde à 100 par défaut
-		PersonToAccountMapper mapper = new PersonToAccountMapper() {
 
-			@Override
-			public Account map(Person p) {
+		List<Account> result = map(personList, (Person p) -> {
 
-				Account account = new Account();
-				account.setOwner(p);
-				account.setBalance(100);
+			Account account = new Account();
+			account.setOwner(p);
+			account.setBalance(100);
 
-				return account;
-			}
-
-		};
-
-		List<Account> result = map(personList, mapper);
+			return account;
+			
+		});
 
 		assertThat(result, hasSize(personList.size()));
 		assertThat(result, everyItem(hasProperty("balance", is(100))));

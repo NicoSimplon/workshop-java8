@@ -1,6 +1,7 @@
 package java8.ex04;
 
 
+import java8.data.Account;
 import java8.data.Data;
 import java8.data.Person;
 import org.junit.Test;
@@ -16,15 +17,17 @@ public class Lambda_04_Test {
 
     // tag::interfaces[]
     interface GenericPredicate<T> {
-        // TODO
+        
+    	T test(T t);
+    	
     }
 
     interface GenericMapper<T, E> {
-        // TODO
+        T map(E e);
     }
 
     interface Processor<T> {
-        // TODO
+        void process(T t);
     }
     // end::interfaces[]
 
@@ -33,8 +36,8 @@ public class Lambda_04_Test {
 
         private Collection<T> list = new ArrayList<>();
 
-        public void add(T a) {
-            list.add(a);
+        public void add(T t) {
+            list.add(t);
         }
 
         public void addAll(Collection<T> all) {
@@ -47,14 +50,24 @@ public class Lambda_04_Test {
         // tag::methods[]
         private FuncCollection<T> filter(GenericPredicate<T> predicate) {
             FuncCollection<T> result = new FuncCollection<>();
-            // TODO
+            
+            for (T r : result.list) {
+            	if ((boolean)predicate.test(r)) {
+            		result.add(r);
+            	}
+            }
+            
             return result;
         }
 
         private <E> FuncCollection<E> map(GenericMapper<T, E> mapper) {
             FuncCollection<E> result = new FuncCollection<>();
-            // TODO
-            return result;
+
+    		for (E e : result.list) {
+    			result.add(mapper.map(e)); //TODO
+    		}
+
+    		return result;
         }
 
         private void forEach(Processor<T> processor) {
