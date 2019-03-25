@@ -14,57 +14,57 @@ import static org.junit.Assert.*;
  */
 public class Method_02_Test {
 
-    // tag::IDao[]
-    interface IDao {
-        List<Person> findAll();
+	// tag::IDao[]
+	interface IDao {
+		List<Person> findAll();
 
-        // TODO créer une méthode String format()
-        // TODO la méthode retourne une chaîne de la forme [<nb_personnes> persons]
-        // TODO exemple de résultat : "[14 persons]", "[30 persons]"
-        
-        default String format(){
-        	
-        	int nb_personnes = findAll().size();
-        	
-        	return "[" + nb_personnes + " persons]";
-        }
-    }
-    // end::IDao[]
+		// TODO créer une méthode String format()
+		// TODO la méthode retourne une chaîne de la forme [<nb_personnes>
+		// persons]
+		// TODO exemple de résultat : "[14 persons]", "[30 persons]"
 
-    // tag::DaoA[]
-    class DaoA implements IDao {
+		default String format() {
 
-        List<Person> people = Data.buildPersonList(20);
+			return "[" + findAll().size() + " persons]";
 
-        @Override
-        public List<Person> findAll() {
-            return people;
-        }
+		}
+	}
+	// end::IDao[]
 
-        // TODO redéfinir la méthode String format()
-        // TODO la méthode retourne une chaîne de la forme DaoA[<nb_personnes> persons]
-        // TODO exemple de résultat : "DaoA[14 persons]", "DaoA[30 persons]"
-        // TODO l'implémentation réutilise la méthode format() de l'interface
-        
-        @Override
-        public String format(){
-        	
-        	String retour = "DaoA";
-        	
-        	return retour += IDao.super.format();
-        }
+	// tag::DaoA[]
+	class DaoA implements IDao {
 
-    }
-    // end::DaoA[]
+		List<Person> people = Data.buildPersonList(20);
 
-    @Test
-    public void test_daoA_format() throws Exception {
+		@Override
+		public List<Person> findAll() {
+			return people;
+		}
 
-        DaoA daoA = new DaoA();
+		// TODO redéfinir la méthode String format()
+		// TODO la méthode retourne une chaîne de la forme DaoA[<nb_personnes>
+		// persons]
+		// TODO exemple de résultat : "DaoA[14 persons]", "DaoA[30 persons]"
+		// TODO l'implémentation réutilise la méthode format() de l'interface
 
-        // TODO invoquer la méthode format() pour que le test soit passant
-        String result = daoA.format();
+		@Override
+		public String format() {
 
-        assertThat(result, is("DaoA[20 persons]"));
-    }
+			return DaoA.class.getSimpleName() + IDao.super.format();
+
+		}
+
+	}
+	// end::DaoA[]
+
+	@Test
+	public void test_daoA_format() throws Exception {
+
+		DaoA daoA = new DaoA();
+
+		// TODO invoquer la méthode format() pour que le test soit passant
+		String result = daoA.format();
+
+		assertThat(result, is("DaoA[20 persons]"));
+	}
 }
