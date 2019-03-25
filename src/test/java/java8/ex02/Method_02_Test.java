@@ -22,9 +22,9 @@ public class Method_02_Test {
         // TODO la méthode retourne une chaîne de la forme [<nb_personnes> persons]
         // TODO exemple de résultat : "[14 persons]", "[30 persons]"
         
-        default String format(List<Person> list){
+        default String format(){
         	
-        	int nb_personnes = list.size();
+        	int nb_personnes = findAll().size();
         	
         	return "[" + nb_personnes + " persons]";
         }
@@ -47,11 +47,11 @@ public class Method_02_Test {
         // TODO l'implémentation réutilise la méthode format() de l'interface
         
         @Override
-        public String format(List<Person> list){
+        public String format(){
         	
         	String retour = "DaoA";
         	
-        	return retour += IDao.super.format(list);
+        	return retour += IDao.super.format();
         }
 
     }
@@ -63,7 +63,7 @@ public class Method_02_Test {
         DaoA daoA = new DaoA();
 
         // TODO invoquer la méthode format() pour que le test soit passant
-        String result = daoA.format(daoA.findAll());
+        String result = daoA.format();
 
         assertThat(result, is("DaoA[20 persons]"));
     }
