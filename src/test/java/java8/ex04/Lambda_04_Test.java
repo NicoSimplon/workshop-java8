@@ -25,7 +25,7 @@ public class Lambda_04_Test {
 
 	interface GenericMapper<T, E> {
 		
-		E map(T e);
+		E map(T t);
 		
 	}
 
@@ -72,7 +72,7 @@ public class Lambda_04_Test {
 			FuncCollection<E> result = new FuncCollection<>();
 
 			for (T e : this.list) {
-				result.add((E) mapper.map(e));
+				result.add(mapper.map(e));
 			}
 
 			return result;
