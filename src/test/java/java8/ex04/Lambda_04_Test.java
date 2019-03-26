@@ -56,7 +56,7 @@ public class Lambda_04_Test {
 		private FuncCollection<T> filter(GenericPredicate<T> predicate) {
 			FuncCollection<T> result = new FuncCollection<>();
 
-			for (T r : result.list) {
+			for (T r : this.list) {
 
 				if(predicate.test(r)){
 					result.add(r);
@@ -69,22 +69,21 @@ public class Lambda_04_Test {
 
 
 		private <E> FuncCollection<E> map(GenericMapper<T, E> mapper) {
-			FuncCollection<T> result = new FuncCollection<>();
-			
-			FuncCollection<E> list = new FuncCollection<>();
+			FuncCollection<E> result = new FuncCollection<>();
 
-			for (T e : result.list) {
-				list.add((E) mapper.map(e));
+			for (T e : this.list) {
+				result.add((E) mapper.map(e));
 			}
 
-			return list;
+			return result;
 		}
 
 		private void forEach(Processor<T> processor) {
-			FuncCollection<T> result = new FuncCollection<>();
-			for (T e : result.list) {
+			
+			for (T e : this.list) {
 				processor.process((T) e);
 			}
+			
 		}
 		// end::methods[]
 
