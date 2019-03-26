@@ -5,6 +5,7 @@ import java8.data.Data;
 import java8.data.Person;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -155,6 +156,8 @@ public class Lambda_04_Test {
 		 */
 		personFuncCollection .filter(filterByAge)
 			.map(mapToAccount) .forEach(verifyAccount);
+		
+		assertThat(verifyAccount, notNullValue());
 	}
 	// end::test_filter_map_forEach_with_vars[]
 
