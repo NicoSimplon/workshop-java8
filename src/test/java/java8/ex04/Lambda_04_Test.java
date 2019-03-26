@@ -81,7 +81,7 @@ public class Lambda_04_Test {
 		private void forEach(Processor<T> processor) {
 			
 			for (T e : this.list) {
-				processor.process((T) e);
+				processor.process(e);
 			}
 			
 		}
