@@ -8,6 +8,7 @@ import java8.data.domain.Pizza;
 import org.junit.Test;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,9 +40,7 @@ public class Stream_03_Test {
         List<Order> orders = new Data().getOrders();
 
         // TODO construire une Map <Client, Commandes effectuées par le client
-        Map<Customer, List<Order>> result = orders.stream().map(a -> {
-        	Map<Customer , >
-        });
+        Map<Customer, List<Order>> result = orders.stream().collect(Collectors.toMap(o -> o.getCustomer(), o));
 
         assertThat(result.size(), is(2));
         assertThat(result.get(new Customer(1)), hasSize(4));
