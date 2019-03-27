@@ -40,7 +40,7 @@ public class Stream_03_Test {
         List<Order> orders = new Data().getOrders();
 
         // TODO construire une Map <Client, Commandes effectuées par le client
-        Map<Customer, List<Order>> result = orders.stream().collect(Collectors.toMap(o -> o.getCustomer(), o));
+        Map<Customer, List<Order>> result = orders.stream().collect(Collectors.groupingBy(o -> o.getCustomer()));
 
         assertThat(result.size(), is(2));
         assertThat(result.get(new Customer(1)), hasSize(4));
@@ -66,7 +66,7 @@ public class Stream_03_Test {
         List<Customer> customers = new Data().getCustomers();
 
         // TODO Construire la map Sexe -> Chaîne représentant les prénoms des clients
-        Map<Gender, String> result = null;
+        Map<Gender, String> result = customers.stream().collect(Collectors.);
 
         assertThat(result.get(Gender.F), is("Alexandra|Marion|Sophie"));
         assertThat(result.get(Gender.M), is("Cyril|Johnny"));
