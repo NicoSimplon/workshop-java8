@@ -66,7 +66,11 @@ public class Stream_03_Test {
         List<Customer> customers = new Data().getCustomers();
         
         // TODO Construire la map Sexe -> Chaîne représentant les prénoms des clients
-        Map<Gender, String> result = customers.stream().collect(Collectors.toMap(o -> o.getGender(), customers.stream().map(j -> j.getFirstname()).collect(Collectors.joining("|"))));
+        Map<Gender, String> result = customers.stream().map(c -> {
+        	Map<Gender, String> m = new HashMap<>();
+        	m.put(c.getGender(), c.getFirstname());
+        	return m;
+        }).collect(Collectors.toMap(Customer::getGender, Customer::getFirstname));
 
         System.out.println(result.get(Gender.F));
         
