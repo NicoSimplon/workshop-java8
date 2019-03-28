@@ -64,10 +64,12 @@ public class Stream_03_Test {
     public void test_mapping() throws Exception {
 
         List<Customer> customers = new Data().getCustomers();
-
+        
         // TODO Construire la map Sexe -> Chaîne représentant les prénoms des clients
-        Map<Gender, String> result = customers.stream().collect(Collectors.);
+        Map<Gender, String> result = customers.stream().collect(Collectors.toMap(o -> o.getGender(), customers.stream().map(j -> j.getFirstname()).collect(Collectors.joining("|"))));
 
+        System.out.println(result.get(Gender.F));
+        
         assertThat(result.get(Gender.F), is("Alexandra|Marion|Sophie"));
         assertThat(result.get(Gender.M), is("Cyril|Johnny"));
     }
