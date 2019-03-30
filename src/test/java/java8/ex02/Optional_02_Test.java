@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static org.hamcrest.Matchers.*;
@@ -59,7 +60,7 @@ public class Optional_02_Test {
 
     }
 
-    @Test
+    @Test (expected = GoodException.class)
     public void test_optional_ifPresent() throws Exception {
         Person jules = new Person("Hugues", "Jules", 30, "pass");
 
@@ -75,6 +76,16 @@ public class Optional_02_Test {
         
         assertThat(julesAge.isPresent(), is(true));
         assertThat(julesAge.get(), is(30));
+        
+        // https://stackoverflow.com/questions/24228279/proper-usage-of-optional-ifpresent
+        julesOpt.ifPresent(new Consumer<Person>() 
+        {
+            @Override
+            public void accept(Person person) 
+            {
+            	throw new GoodException();
+            }
+        });
         
     }
 }
