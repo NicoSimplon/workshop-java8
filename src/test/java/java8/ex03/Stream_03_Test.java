@@ -66,13 +66,20 @@ public class Stream_03_Test {
         List<Customer> customers = new Data().getCustomers();
         
         // TODO Construire la map Sexe -> Chaîne représentant les prénoms des clients
+             
         Map<Gender, String> result = customers.stream().map(c -> {
         	Map<Gender, String> m = new HashMap<>();
-        	m.put(c.getGender(), c.getFirstname());
+        	String fem = customers.stream().filter(g -> g.getGender() == Gender.F).map(Customer::getFirstname).collect(Collectors.joining("|"));
+        	String hom = customers.stream().filter(h -> h.getGender() == Gender.M).map(Customer::getFirstname).collect(Collectors.joining("|"));
+        	
+        	if (c.getGender() == Gender.F) {        		
+        		m.put(Gender.F, fem);
+        	}
+        	else if (c.getGender() == Gender.M) {
+        		m.put(Gender.M, hom);
+        	}
         	return m;
-        }).collect(Collectors.toMap(Customer::getGender, Customer::getFirstname));
-
-        System.out.println(result.get(Gender.F));
+        });
         
         assertThat(result.get(Gender.F), is("Alexandra|Marion|Sophie"));
         assertThat(result.get(Gender.M), is("Cyril|Johnny"));
