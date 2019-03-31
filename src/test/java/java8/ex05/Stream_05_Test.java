@@ -2,10 +2,13 @@ package java8.ex05;
 
 import org.junit.Test;
 
+import java8.data.domain.Pizza;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,10 +74,18 @@ public class Stream_05_Test {
         // TODO utiliser la méthode java.nio.file.Files.lines pour créer un stream de lignes du fichier naissances_depuis_1900.csv
         // Le bloc try(...) permet de fermer (close()) le stream après utilisation
     	
-        try (Stream<String> lines = java.nio.file.Files.lines(java.nio.file.Paths.get(NAISSANCES_DEPUIS_1900_CSV))) {
+        try (Stream<String> lines = Files.lines(Paths.get(NAISSANCES_DEPUIS_1900_CSV))) {
 
             // TODO construire une MAP (clé = année de naissance, valeur = somme des nombres de naissance de l'année)
-            Map<String, Integer> result = null;
+            Map<String, Integer> result = lines.skip(1).map(line -> {
+            	
+            	String[] lineTab = line.split(";");
+            	return new Naissance(lineTab[1], lineTab[2], Integer.valueOf(lineTab[3]));
+            
+            }).collect(groupingBy(
+                    Naissance::getAnnee,
+                    summingInt(Naissance::getNombre)
+            ));
             
 
 
@@ -88,10 +99,15 @@ public class Stream_05_Test {
 
         // TODO utiliser la méthode java.nio.file.Files.lines pour créer un stream de lignes du fichier naissances_depuis_1900.csv
         // Le bloc try(...) permet de fermer (close()) le stream après utilisation
-        try (Stream<String> lines = java.nio.file.Files.lines(java.nio.file.Paths.get(NAISSANCES_DEPUIS_1900_CSV))) {
+        try (Stream<String> lines = Files.lines(Paths.get(NAISSANCES_DEPUIS_1900_CSV))) {
 
             // TODO trouver l'année où il va eu le plus de nombre de naissance
-            Optional<Naissance> result = null;
+        	Optional<Naissance> result = lines.skip(1).map(line -> {
+        		
+                String[] lineTab = line.split(";");
+                return new Naissance(lineTab[1], lineTab[2], Integer.valueOf(lineTab[3]));
+                
+        	}).max(Comparator.comparing(Naissance::getNombre));
 
 
             assertThat(result.get().getNombre(), is(48));
@@ -104,11 +120,22 @@ public class Stream_05_Test {
     public void test_collectingAndThen() throws IOException {
         // TODO utiliser la méthode java.nio.file.Files.lines pour créer un stream de lignes du fichier naissances_depuis_1900.csv
         // Le bloc try(...) permet de fermer (close()) le stream après utilisation
-        try (Stream<String> lines = null) {
+        try (Stream<String> lines = Files.lines(Paths.get(NAISSANCES_DEPUIS_1900_CSV))) {
 
             // TODO construire une MAP (clé = année de naissance, valeur = maximum de nombre de naissances)
             // TODO utiliser la méthode "collectingAndThen" à la suite d'un "grouping"
-            Map<String, Naissance> result = null;
+        	Map<String, Naissance> result = lines.skip(1).map(line -> {
+        		
+                String[] lineTab = line.split(";");
+                return new Naissance(lineTab[1], lineTab[2], Integer.valueOf(lineTab[3]));
+                
+            }).collect(groupingBy(
+                    Naissance::getAnnee,
+                    collectingAndThen(
+                            maxBy(Comparator.comparing(Naissance::getNombre)),
+                            Optional::get
+                    )
+));
 
             assertThat(result.get("2015").getNombre(), is(38));
             assertThat(result.get("2015").getJour(), is("20150909"));
@@ -129,9 +156,15 @@ public class Stream_05_Test {
         // TODO utiliser la méthode java.nio.file.Files.list pour parcourir un répertoire
 
         // TODO trouver la pizza la moins chère
-        String pizzaNamePriceMin = null;
+    	try (Stream<Path> pathStream = Files.list(Paths.get(DATA_DIR))) {
 
-        assertThat(pizzaNamePriceMin, is("L'indienne"));
+            // TODO trouver la pizza la moins chère
+            String pizzaNamePriceMin = pathStream.map(this::pathToPizza)
+                    .min(Comparator.comparing(Pizza::getPrice)).orElseThrow(() -> new RuntimeException("fichier vide")).getName();
+
+
+            assertThat(pizzaNamePriceMin, is("L'indienne"));
+    	}
 
     }
 
@@ -140,4 +173,21 @@ public class Stream_05_Test {
     // TODO 1 fichier par pizza
     // TODO le nom du fichier est de la forme ID.txt (ex. 1.txt, 2.txt)
 
+    private Pizza pathToPizza(Path path) {
+        try {
+            Pizza p = new Pizza();
+
+            String[] line = Files
+                    .lines(path)
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("fichier " + path + " vide"))
+                    .split(";");
+            p.setName(line[0]);
+            p.setPrice(Integer.valueOf(line[1]));
+            return p;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
 }
